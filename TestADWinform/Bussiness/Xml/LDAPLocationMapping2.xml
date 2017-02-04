@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MappingStore>
+  <Mapping>
+    <LDAPID>1</LDAPID>
+    <LDAPDomain>DC=testdc,DC=extest,DC=com</LDAPDomain>
+    <OU>OU=Office365Users</OU>
+    <Location>OVERSEA</Location>
+  </Mapping>
+  <Mapping>
+    <LDAPID>2</LDAPID>
+    <LDAPDomain>DC=dailian,DC=extest,DC=com</LDAPDomain>
+    <OU>OU=Office365Users</OU>
+    <Location>DAILIAN</Location>
+  </Mapping>
+  <Mapping>
+    <LDAPID>3</LDAPID>
+    <LDAPDomain>DC=beijing,DC=extest,DC=com</LDAPDomain>
+    <OU>OU=Beijing,OU=Office365Users</OU>
+    <Location>BEIJING</Location>
+  </Mapping>
+  <Mapping>
+    <LDAPID>4</LDAPID>
+    <LDAPDomain>DC=cn-bj,DC=extest,DC=com</LDAPDomain>
+    <OU>OU=LDAP Users</OU>
+    <Location>CN-BJ</Location>
+  </Mapping>
+  <Mapping>
+    <LDAPID>1</LDAPID>
+    <LDAPDomain>DC=testdc,DC=extest,DC=com</LDAPDomain>
+    <OU>CN=Users</OU>
+    <Location>OTHERS</Location>
+  </Mapping>
+</MappingStore>

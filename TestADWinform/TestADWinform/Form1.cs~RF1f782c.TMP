@@ -1,0 +1,134 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.DirectoryServices;
+
+
+namespace TestADWinform
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void btn1_Click(object sender, EventArgs e)
+        {
+
+        }
+        /// <summary>
+        /// 获得DirectoryEntry对象实例,以管理员登陆AD
+        /// </summary>
+        /// <returns></returns>
+        private static DirectoryEntry GetDirectoryObject()
+        {
+            DirectoryEntry entry = null;
+            try
+            {
+                entry = new DirectoryEntry("LDAP://10.10.10.16", "Peter", " ab#CD%1234", AuthenticationTypes.Secure);
+            }
+            catch (Exception ex)
+            {
+            }
+            return entry;
+        }
+        /// <summary>
+        /// 根据用户公共名称取得用户的 对象
+        /// </summary>
+        /// <param name="commonName">用户公共名称</param>
+        /// <returns>如果找到该用户则返回用户的对象,否则返回 null</returns>
+        public static DirectoryEntry GetDirectoryEntry(string commonName)
+        {
+            DirectoryEntry de = GetDirectoryObject();
+            DirectorySearcher deSearch = new DirectorySearcher(de);
+            deSearch.Filter = "(&(&(objectCategory=person)(objectClass=user))(cn=" + commonName.Replace("\\", "") + "))";
+            deSearch.SearchScope = SearchScope.Subtree;
+            try
+            {
+                SearchResult result = deSearch.FindOne();
+                de = new DirectoryEntry(result.Path);
+                return de;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// 修改查询到的用户
+        /// </summary>
+        /// <param name="CommonName">通用名（displayName,系统中显示的中文字）</param>
+        /// <param name="Account">帐户名（如Peter）</param>
+        /// <param name="organizeName">组织单元名（资讯中心）</param>
+        /// <param name="password">密码</param>
+        public static string ChangeADAccount(string CommonName, string Account, string password)
+        {
+            //获取对应AD实体
+            DirectoryEntry user = GetDirectoryEntry(commonName);
+            try
+            {
+                ADHelper.SetProperty(user, " sAMAccountName ", Account);
+                user.Invoke("SetPassword", new object[] { password });
+                user.CommitChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return user.Path;
+        }
+
+        /// <summary>
+        /// 设置指定的属性值
+        /// </summary>
+        /// <param name="de"></param>
+        /// <param name="propertyName">属性名称?</param>
+        /// <param name="propertyValue">属性值</param>
+        public static void SetProperty(DirectoryEntry de, string propertyName, string propertyValue)
+        {
+            if (de.Properties.Contains(propertyName))
+            {
+                if (String.IsNullOrEmpty(propertyValue))
+                {
+                    de.Properties[propertyName].RemoveAt(0);
+                }
+                else
+                {
+                    de.Properties[propertyName][0] = propertyValue;
+                }
+            }
+            else
+            {
+                if (!String.IsNullOrEmpty(propertyValue))
+                {
+                    de.Properties[propertyName].Add(propertyValue);
+                }
+            }
+        }
+        DirectoryEntry OUEntry = new DirectoryEntry(GetOrganizeNamePath(OUName), "Peter", " ab#CD%1234", AuthenticationTypes.Secure);
+        /// <summary>
+        /// 获得OU的Path
+        /// </summary>
+        /// <param name="organizeUnit">OU名</param>
+        /// <returns></returns>
+        public static string GetOrganizeNamePath(string organizeUnit)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(ADPath);
+            sb.Append("/");
+            return sb.Append(SplitOrganizeNameToDN(organizeUnit)).ToString();
+        }
+        //修改OU项       
+
+       //OUEntry.Rename("OU=" + newOUName);
+
+        //OUEntry.CommitChanges();
+    }
+}

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MappingStore>
+  <Mapping>
+    <LDAPID>1</LDAPID>
+    <OU>OU=Beijing,OU=Office365Users,DC=beijing,DC=hisoft,DC=com</OU>
+    <Location>BEIJING</Location>
+  </Mapping>
+  <Mapping>
+    <LDAPID>1</LDAPID>
+    <OU>OU=Others,OU=Office365Users,DC=beijing,DC=hisoft,DC=com</OU>
+    <Location>Others</Location>
+  </Mapping>
+  <Mapping>
+    <LDAPID>1</LDAPID>
+    <OU>OU=Overseas,OU=Office365Users,DC=beijing,DC=hisoft,DC=com</OU>
+    <Location>Oversea</Location>
+  </Mapping>
+  <Mapping>
+    <LDAPID>3</LDAPID>
+    <OU>OU=Office365Users,DC=dalian,DC=hisoft,DC=com</OU>
+    <Location>DALIAN</Location>
+  </Mapping>
+  <Mapping>
+    <LDAPID>4</LDAPID>
+    <OU>OU=Office365Users,DC=wuxi,DC=hisoft,DC=com</OU>
+    <Location>WUXI</Location>
+  </Mapping>
+  <Mapping>
+    <LDAPID>8</LDAPID>
+    <OU>OU=Office365Users,DC=cn-sz,DC=pactera,DC=com</OU>
+    <Location>SHENZHEN</Location>
+  </Mapping>
+  <Mapping>
+    <LDAPID>7</LDAPID>
+    <OU>OU=Office365Users,DC=cn-sh,DC=pactera,DC=com</OU>
+    <Location>SHANGHAI</Location>
+  </Mapping>
+</MappingStore>

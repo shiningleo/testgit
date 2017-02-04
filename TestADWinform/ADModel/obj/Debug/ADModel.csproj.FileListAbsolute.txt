@@ -1,0 +1,10 @@
+D:\ssoc\AD\ADModel\bin\Debug\ADModel.dll
+D:\ssoc\AD\ADModel\bin\Debug\ADModel.pdb
+D:\ssoc\AD\ADModel\obj\Debug\ADModel.csprojResolveAssemblyReference.cache
+D:\ssoc\AD\ADModel\obj\Debug\ADModel.dll
+D:\ssoc\AD\ADModel\obj\Debug\ADModel.pdb
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\ADModel\bin\Debug\ADModel.dll
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\ADModel\bin\Debug\ADModel.pdb
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\ADModel\obj\Debug\ADModel.csprojResolveAssemblyReference.cache
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\ADModel\obj\Debug\ADModel.dll
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\ADModel\obj\Debug\ADModel.pdb

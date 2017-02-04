@@ -1,0 +1,430 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.DirectoryServices;
+using Bussiness;
+
+
+namespace TestADWinform
+{
+    public partial class Form1 : Form
+    {
+        /// LDAP 地址
+        /// </summary>
+        public static string LDAPDomain = "DC=extest,DC=com";//DC=extest,DC=com
+     
+        public Form1()
+        {
+            InitializeComponent();
+        }
+               //用户	(&(objectCategory=person)(objectClass=user))
+              //计算机	(objectCategory=computer)
+             //组	(objectCategory=group)
+            //联系人	(objectCategory=contact)
+             //共享文件夹	(objectCategory=volume)
+             //打印机	(objectCategory=printQueue)
+
+        private void btn1_Click(object sender, EventArgs e)
+        {
+            string UserPrincipalName = "test1@extest.com";//this.txtBoxname.Text;
+            string SamAccountName = "test1";
+            //GetDirectoryEntry(UserPrincipalName);
+            DeleteADAccount(UserPrincipalName);
+        }
+        /// <summary>
+        /// 获取OU的实体
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnOU_Click(object sender, EventArgs e)
+        {
+            string OUName="ou1";
+            string groupname = "group1";
+            string username = "user1";
+            //DirectoryEntry OUEntry = new DirectoryEntry(GetOrganizeNamePath(OUName), "Administrator", "123.com", AuthenticationTypes.Secure);
+
+            GetADGroupInOU(username, OUName);
+        }
+        //删除AD账户用户
+        private void delADUser_Click(object sender, EventArgs e)
+        {
+          bool re= DeleteADUser();
+        }
+
+        /// <summary>
+        /// 获得DirectoryEntry对象实例,以管理员登陆AD
+        /// </summary>
+        /// <returns></returns>
+        private static DirectoryEntry GetDirectoryObject()
+        {
+            DirectoryEntry entry = null;
+            try
+            {
+                entry = new DirectoryEntry("LDAP://172.16.253.234", "Administrator", "123.com", AuthenticationTypes.Secure);
+                //entry = new DirectoryEntry("LDAP://192.168.100.100", "Administrator", "123", AuthenticationTypes.Secure);
+            }
+            catch (Exception ex)
+            {
+            }
+            return entry;
+        }
+        /// <summary>
+        /// 根据用户公共名称取得用户的 对象
+        /// </summary>
+        /// <param name="commonName">用户公共名称</param>
+        /// <returns>如果找到该用户则返回用户的对象,否则返回 null</returns>
+        public static DirectoryEntry GetDirectoryEntry(string commonName)
+        {
+            //用户	(&(objectCategory=person)(objectClass=user))
+            DirectoryEntry de = GetDirectoryObject();
+            DirectorySearcher deSearch = new DirectorySearcher(de);
+            deSearch.Filter = "(&(&(objectCategory=person)(objectClass=user))(UserPrincipalName=" + commonName.Replace("\\", "") + "))";
+            deSearch.SearchScope = SearchScope.Subtree;
+            try
+            {
+                SearchResult result = deSearch.FindOne();
+                de = new DirectoryEntry(result.Path);
+                return de;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public  string DeleteADAccount(string commonName)
+        {
+            string cn = "tom11";//tom11
+            try
+            {
+               
+                DirectoryEntry AD = GetDirectoryObject();
+                DirectoryEntry NewUser = AD.Children.Find("CN=" + cn, "User");
+                AD.Children.Remove(NewUser);
+                AD.CommitChanges();
+                AD.Close();
+            }
+            catch (Exception ex) {
+                return null;
+            }
+            return null;
+
+    
+    }
+
+        /// <summary>
+        /// 移除组用户
+        /// </summary>
+        /// <param name="strGroupName">组名</param>
+        /// <param name="strUserName">用户名</param>
+        /// <returns></returns>
+        public bool RemoveGroupUser(string strGroupName, string strUserName)
+        {
+            try
+            {
+                DirectoryEntry AD = GetDirectoryObject();
+                DirectoryEntry Group = AD.Children.Find(strGroupName, "group");// 找到组
+
+                object members = Group.Invoke("Members", null);
+                foreach (object member in (System.Collections.IEnumerable)members)
+                {
+                    //获取该组的每个成员
+                    DirectoryEntry x = new DirectoryEntry(member);
+
+                    if (strUserName == x.Name) //要移除的用户存在的话，则从该组中移除。
+                    {
+                        DirectoryEntry User = AD.Children.Find(strUserName, "user");//找到该用户
+                        Group.Invoke("Remove", new Object[] { User.Path });
+                    }
+                }
+                AD.Close();
+            }
+            catch
+            {
+                throw;
+            }
+            return true;
+        }
+
+
+
+        /// <summary>
+        /// 修改查询到的用户
+        /// </summary>
+        /// <param name="CommonName">通用名（displayName,系统中显示的中文字）</param>
+        /// <param name="Account">帐户名（如Peter）</param>
+        /// <param name="organizeName">组织单元名（资讯中心）</param>
+        /// <param name="password">密码</param>
+        public static string ChangeADAccount(string CommonName, string Account, string password)
+        {
+            //获取对应AD实体
+            DirectoryEntry user = GetDirectoryEntry(CommonName);
+            try
+            {
+                ADHelper.SetProperty(user, " sAMAccountName ", Account);
+                //user.Invoke("SetPassword", new object[] { password });
+               // user.CommitChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return null;//user.Path;
+        }
+
+        /// <summary>
+        /// 设置指定的属性值
+        /// </summary>
+        /// <param name="de"></param>
+        /// <param name="propertyName">属性名称?</param>
+        /// <param name="propertyValue">属性值</param>
+        public static void SetProperty(DirectoryEntry de, string propertyName, string propertyValue)
+        {
+            if (de.Properties.Contains(propertyName))
+            {
+                if (String.IsNullOrEmpty(propertyValue))
+                {
+                    de.Properties[propertyName].RemoveAt(0);
+                }
+                else
+                {
+                    de.Properties[propertyName][0] = propertyValue;
+                }
+            }
+            else
+            {
+                if (!String.IsNullOrEmpty(propertyValue))
+                {
+                    de.Properties[propertyName].Add(propertyValue);
+                }
+            }
+        }
+       
+        /// <summary>
+        /// 获得OU的Path
+        /// </summary>
+        /// <param name="organizeUnit">OU名</param>
+        /// <returns></returns>
+        public static string GetOrganizeNamePath(string organizeUnit)
+        {
+            string ADPath = "LDAP://172.16.253.234";
+            StringBuilder sb = new StringBuilder();
+            //
+            sb.Append(ADPath);
+            sb.Append("/");
+            return sb.Append(SplitOrganizeNameToDN(organizeUnit)).ToString();
+        }
+
+       
+           /// <summary>
+        /// 分离组织名称为标准AD的DN名称,各个组织级别以"/"或"\"分开。如"总部/物业公司/小区"，并且当前域为
+        /// ExchangeTest.Com，则返回的AD的DN表示名为"OU=小区,OU=物业公司,OU=总 
+        /// 部,DC=ExchangeTest,DC=Com"。 
+        /// </summary>
+        /// <param name="organizeName">组织名称</param>
+        /// <returns>返回一个级别</returns>
+        public static string SplitOrganizeNameToDN(string organizeName)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (organizeName != null && organizeName.Length > 0)
+            {
+                string[] allOu = organizeName.Split(new char[] { '/', '\\' });
+                for (int i = allOu.Length - 1; i >= 0; i--)
+                {
+                    string ou = allOu[i];
+                    if (sb.Length > 0)
+                    {
+                        sb.Append(",");
+                    }
+                    sb.Append("OU=").Append(ou);
+                }
+            }
+            //如果传入了组织名称，则添加,
+            if (sb.Length > 0)
+            {
+                sb.Append(",");
+            }
+            sb.Append(GetDomainDN());
+            return sb.ToString();
+        }
+        /// <summary>
+        /// 获取域的后缀DN名,如域为cinf.com,则返回"DC=cinf,DC=Com"
+        /// </summary>
+        /// <returns></returns>
+        public static string GetDomainDN()
+        {
+            return LDAPDomain;
+        }
+      
+        //修改OU项       
+
+       //OUEntry.Rename("OU=" + newOUName);
+
+        //OUEntry.CommitChanges();
+          //删除OU 
+        //DirectoryEntry OUParent = OUEntry.Parent;
+
+        //OUParent.Children.Remove(OUEntry);
+
+        //OUParent.CommitChanges();
+        //添加成员到组里
+       // DirectoryEntry group = dom.Children.Find(groupDN);
+       // Add the user to the group.
+       // g roup.Properties["member"].Add(userDN);
+       //group.CommitChanges();
+
+
+
+    public  bool DeleteADUser()
+    {
+
+        string adminUser = "Administrator";
+        string adminPassword = "123";//123.com
+        string userName="user3";
+        bool result= ADHelper.DeleteADAccount(adminUser, adminPassword, userName);
+      return result; 
+    
+    
+    
+    }
+
+        /// <summary>
+        /// 获取AD组
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <param name="organizeUnit">组织名称</param>
+        /// <returns></returns>
+        public  DirectoryEntry GetADGroupInOU(string groupName, string organizeUnit)
+        {
+            if (!String.IsNullOrEmpty(groupName))
+            {
+                DirectoryEntry de = GetDirectoryObject();//new DirectoryEntry(GetOrganizeNamePath(organizeUnit), "Administrator", "123.com", AuthenticationTypes.Secure); ;
+                DirectorySearcher deSearch = new DirectorySearcher(de);
+               // deSearch.Filter = "(&(objectClass=group)(cn=" + groupName.Replace("\\", "") + "))";
+              //deSearch.Filter = "(&(objectClass=organizationalUnit)(OU=" + organizeUnit.Replace("\\", "") + "))";
+                //deSearch.Filter = "(&(&(objectCategory=person)(objectClass=user))(UserPrincipalName=" + commonName.Replace("\\", "") + "))";
+                deSearch.Filter = "(&(&(objectCategory=person)(objectClass=user)(objectCategory=organizationalUnit))(OU=" + organizeUnit.Replace("\\", "") + ")(cn=" + groupName + "))";
+                deSearch.SearchScope = SearchScope.Subtree;
+                try
+                {
+                    SearchResult result = deSearch.FindOne();
+                    if (result != null)
+                    {
+                       // de = new DirectoryEntry(result.Path, adminName, adminPassword);
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                    return de;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+         // 管理组成员
+
+        //group.Properties["member"].Add(user.Properties["distinguishedName"].Value);
+        //group.Properties["member"].Remove(user.Properties["distinguishedName"].Value);
+
+        #region 根据当前登录域账号 获取AD用户姓名和所在OU目录
+        /// <summary>
+        /// 根据当前登录域账号 获取AD用户姓名和所在OU目录   返回域用户是否存在
+        /// </summary>
+        /// <param name="searchUser">要搜索的当前用户名</param>
+        /// <param name="paths">out返回该用户所在OU目录</param>
+        /// <param name="userName">out 返回该用户的姓名</param>
+        /// <returns>搜索域用户是否存在</returns>
+        public static bool GetADUserNameAndPaths(string searchUser, out List<string> paths, out string userName)
+        {
+            bool isExite = false;//该域用户是否 存在。。。
+           // DataContextProvider.loger.Info(string.Format(">>>>>>>>>>>>>>>>>>>>>>>>>>>获取当前域用户信息log>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>start>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"));
+            DirectoryEntry entry = null;
+            string name = "未知";
+            List<string> directorys = null;
+            try
+            {
+                //读取配置文件...连接登录域服务器
+                //"LDAP://10.2.17.*"   域服务器地址
+                //登录名
+                //密码
+                //DataContextProvider.loger.Info(string.Format("域服务地址：{0}、、域账号：{1}、、域密码{2}、、", ConfigHelper.DomainAddress, ConfigHelper.DomainAccount, ConfigHelper.DomainPassWord));
+                using (entry = GetDirectoryObject())
+                {
+                    if (entry != null)
+                    {
+                        DirectorySearcher mySearcher = new DirectorySearcher(entry);
+                        mySearcher.Filter = ("(&(|(objectClass=user)(objectClass=organizationalUnit)(objectClass=group))(|(cn=" + searchUser + ")(dn=" + searchUser + ")(sAMAccountName=" + searchUser + ")))");
+                        // ("(&(objectClass=organizationalUnit)(OU=电力技术部))");
+                        SearchResult searchResult = mySearcher.FindOne();
+                        if (searchResult != null)
+                        {
+                            isExite = true;//该域用户 存在。。。
+                            string path = searchResult.Path;
+                           // DataContextProvider.loger.Info(string.Format("获取当前登录域账号的OUPath>>>>>>>>>>>>>>>>>>>>>>>>>>>{0}", path));
+
+                            string[] splits = path.Split(new char[] { ',' });
+                            for (int i = splits.Count() - 1; i >= 0; i--)
+                            {
+                                if (splits[i].Contains("OU="))
+                                {
+                                    if (directorys == null)
+                                    {
+                                        directorys = new List<string>();
+                                    }
+                                    directorys.Add(splits[i].Substring(splits[i].IndexOf('=') + 1));
+                                }
+                            }
+                            string xing = (string)(searchResult.Properties["sn"].Count > 0 ? searchResult.Properties["sn"][0] : "");
+                            string ming = (string)(searchResult.Properties["givenname"].Count > 0 ? searchResult.Properties["givenname"][0] : "");
+                            name = (xing + ming);
+                           // DataContextProvider.loger.Info(string.Format("获取当前登录域账号的姓名>>>>>>>属性>>>>>name>>>>>>>>>>>>>>>{0}", name));
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+               // DataContextProvider.loger.Error(" 获取AD用户姓名和所在OU目录 发生异常：：  " + ex.ToString());
+            }
+            //finally
+            //{
+            //    //释放资源
+            //    entry.Close();
+            //    entry.Dispose();
+            //}
+            paths = directorys;
+            userName = name;
+
+            return isExite;
+        }
+
+        #endregion
+
+        private void btnDeleteGroupUser_Click(object sender, EventArgs e)
+        {
+            string groupName = "testgroup"; //this.txtGroupName.Text;
+            string user="userg1";
+
+            bool re=RemoveGroupUser(groupName, user);
+
+
+        }
+
+      
+
+    }
+}

@@ -1,0 +1,13 @@
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\bin\Debug\TestADWinform.exe.config
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\obj\Debug\TestADWinform.csprojResolveAssemblyReference.cache
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\obj\Debug\TestADWinform.Form1.resources
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\obj\Debug\TestADWinform.Properties.Resources.resources
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\obj\Debug\TestADWinform.csproj.GenerateResource.Cache
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\bin\Debug\TestADWinform.exe
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\bin\Debug\TestADWinform.pdb
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\obj\Debug\TestADWinform.exe
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\obj\Debug\TestADWinform.pdb
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\bin\Debug\Bussiness.dll
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\bin\Debug\ADModel.dll
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\bin\Debug\Bussiness.pdb
+c:\users\pactera\documents\visual studio 2013\Projects\TestADWinform\TestADWinform\bin\Debug\ADModel.pdb

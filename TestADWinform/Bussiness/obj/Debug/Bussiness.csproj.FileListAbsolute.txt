@@ -1,0 +1,17 @@
+D:\ssoc\AD\Bussiness\bin\Debug\Bussiness.dll
+D:\ssoc\AD\Bussiness\bin\Debug\Bussiness.pdb
+D:\ssoc\AD\Bussiness\bin\Debug\ADModel.dll
+D:\ssoc\AD\Bussiness\bin\Debug\DocumentFormat.OpenXml.dll
+D:\ssoc\AD\Bussiness\bin\Debug\System.Management.Automation.dll
+D:\ssoc\AD\Bussiness\bin\Debug\ADModel.pdb
+D:\ssoc\AD\Bussiness\obj\Debug\Bussiness.csprojResolveAssemblyReference.cache
+D:\ssoc\AD\Bussiness\obj\Debug\Bussiness.dll
+D:\ssoc\AD\Bussiness\obj\Debug\Bussiness.pdb
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\Bussiness\bin\Debug\Bussiness.dll
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\Bussiness\bin\Debug\Bussiness.pdb
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\Bussiness\bin\Debug\ADModel.dll
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\Bussiness\bin\Debug\System.Management.Automation.dll
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\Bussiness\bin\Debug\ADModel.pdb
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\Bussiness\obj\Debug\Bussiness.csprojResolveAssemblyReference.cache
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\Bussiness\obj\Debug\Bussiness.dll
+C:\Users\pactera\Documents\Visual Studio 2013\Projects\TestADWinform\Bussiness\obj\Debug\Bussiness.pdb

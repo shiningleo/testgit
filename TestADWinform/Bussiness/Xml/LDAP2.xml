@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LDAPStore>
+  <LDAP>
+    <ID>1</ID>
+    <DomainName>testdc.extest.com</DomainName>
+    <LDAPDomain>DC=extest,DC=com</LDAPDomain>
+    <ADPath>LDAP://172.16.253.234</ADPath>
+    <ADUser>extest\Administrator</ADUser>
+    <ADPassword>123.com</ADPassword>
+  </LDAP>
+  <!--<LDAP>
+    <ID>2</ID>
+    <DomainName>dailian.extest.com</DomainName>
+    <LDAPDomain>DC=dailian,DC=extest,DC=com</LDAPDomain>
+    <ADPath>LDAP://172.16.253.183</ADPath>
+    <ADUser>DAILIAN\Administrator</ADUser>
+    <ADPassword>4%RDXAsd</ADPassword>
+  </LDAP>
+  <LDAP>
+    <ID>3</ID>
+    <DomainName>beijing.extest.com</DomainName>
+    <LDAPDomain>DC=beijing,DC=extest,DC=com</LDAPDomain>
+    <ADPath>LDAP://172.16.253.184</ADPath>
+    <ADUser>BEIJING\Administrator</ADUser>
+    <ADPassword>4%RDXAsd</ADPassword>
+  </LDAP>
+  <LDAP>
+    <ID>4</ID>
+    <DomainName>cn-bj.extest.com</DomainName>
+    <LDAPDomain>DC=cn-bj,DC=extest,DC=com</LDAPDomain>
+    <ADPath>LDAP://172.16.253.185</ADPath>
+    <ADUser>CN-BJ\Administrator</ADUser>
+    <ADPassword>4%RDXAsd</ADPassword>
+  </LDAP>-->
+  <!--<LDAP>
+    <ID>5</ID>
+    <DomainName>exchangetest.extest.com</DomainName>
+    <LDAPDomain>DC=exchangetest,DC=extest,DC=com</LDAPDomain>
+    <ADPath>LDAP://172.16.253.235</ADPath>
+    <ADUser>extest\Administrator</ADUser>
+    <ADPassword>4%RDXAsd</ADPassword>
+  </LDAP>-->
+</LDAPStore>
