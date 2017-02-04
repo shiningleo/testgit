@@ -19,7 +19,7 @@ namespace TestADWinform
         static string pwd;
         public   void LdapBind()
         {
-            ldapServer = "172.16.253.234:389";
+            ldapServer = "172.16.253.";
             targetOU = "cn=Administrators,dc=,dc=";//cn=Manager,cn=Builtin,
             pwd = "";
 
